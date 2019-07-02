@@ -15,4 +15,8 @@ object Utils {
     fun toInitials(firstname: String?, lastname: String?):String{
         return ""
     }
+
+    fun humanizeDiff(){
+
+    }
 }
