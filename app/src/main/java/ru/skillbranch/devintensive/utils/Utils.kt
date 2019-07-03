@@ -23,11 +23,11 @@ object Utils {
 
     fun toInitials(firstname: String?, lastname: String?):String?{
         var s: String? = ""
-        if (firstname != null && !firstname.isNullOrBlank()) {
+        if (!firstname.isNullOrBlank()) {
             s += firstname.trim().get(0).toTitleCase()
-            if (lastname != null && !firstname.isNullOrBlank()) s += lastname.trim().get(0).toTitleCase()
+            if (!lastname.isNullOrBlank()) s += lastname.trim().get(0).toTitleCase()
         }
-        else if (lastname != null && !firstname.isNullOrBlank()) s += lastname.trim().get(0).toTitleCase()
+        else if (!lastname.isNullOrBlank()) s += lastname.trim().get(0).toTitleCase()
         else s = null
         return s
     }
