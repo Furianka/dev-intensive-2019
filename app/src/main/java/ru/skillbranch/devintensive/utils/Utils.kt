@@ -21,11 +21,14 @@ object Utils {
         }
     }
 
-    fun toInitials(firstname: String?, lastname: String?):String{
-        return ""
-    }
-
-    fun humanizeDiff(){
-
+    fun toInitials(firstname: String?, lastname: String?):String?{
+        var s: String? = ""
+        if (firstname != null && !firstname.isNullOrBlank()) {
+            s += firstname.get(0).toTitleCase()
+            if (lastname != null && !firstname.isNullOrBlank()) s += lastname.get(0).toTitleCase()
+        }
+        else if (lastname != null && !firstname.isNullOrBlank()) s += lastname.get(0).toTitleCase()
+        else s = null
+        return s
     }
 }
