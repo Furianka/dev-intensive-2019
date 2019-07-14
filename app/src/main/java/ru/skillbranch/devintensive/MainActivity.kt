@@ -11,6 +11,8 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.extensions.hideKeyboard
 import ru.skillbranch.devintensive.models.Bender
+import android.view.inputmethod.EditorInfo
+
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -37,6 +39,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         benderImage.setColorFilter(Color.rgb(r,g,b), PorterDuff.Mode.MULTIPLY)
 
         textTxt.text = benderObj.askQuestion()
+
+        //обработка отправки сообщения нажатием на энтер
+        messageEt.imeOptions = EditorInfo.IME_ACTION_DONE
+        messageEt.setOnEditorActionListener{ v, actionId, _ ->
+            if(actionId == EditorInfo.IME_ACTION_DONE){
+                hideKeyboard()
+                sendMessage()
+                true
+            } else false
+        }
+
+        //обработка отправки сообщения нажатием на иконку отправки
         sendBtn.setOnClickListener(this)
 
     }
@@ -76,11 +90,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         hideKeyboard()
         if (v?.id == R.id.iv_send){
-            val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
-            messageEt.setText("")
-            val (r,g,b) = color
-            benderImage.setColorFilter(Color.rgb(r,g,b), PorterDuff.Mode.MULTIPLY)
-            textTxt.text = phrase
+            sendMessage()
         }
+
+    }
+
+    fun sendMessage(){
+        val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+        messageEt.setText("")
+        val (r,g,b) = color
+        benderImage.setColorFilter(Color.rgb(r,g,b), PorterDuff.Mode.MULTIPLY)
+        textTxt.text = phrase
     }
 }
