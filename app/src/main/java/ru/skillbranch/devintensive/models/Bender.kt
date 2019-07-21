@@ -13,7 +13,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
 
     fun listenAnswer(answer: String) : Pair<String, Triple<Int, Int, Int>>{
         val validRes = isValid(answer)
-        if (validRes == "") {
+        if (validRes == ""){
             if (question == Question.IDLE) return "Отлично - ты справился\nНа этом все, вопросов больше нет" to status.color
             return if (question.answers.contains(answer.toLowerCase())) {
                 question = question.nextQuestion()
@@ -35,8 +35,8 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
 
     fun isValid(answer: String): String{
         when(this.question){
-            Question.NAME -> if (answer.first().isLowerCase()) return "Имя должно начинаться с заглавной буквы" else return ""
-            Question.PROFESSION -> if (answer.first().isUpperCase()) return "Профессия должна начинаться со строчной буквы" else return ""
+            Question.NAME -> if (answer == "" || answer.first().isLowerCase()) return "Имя должно начинаться с заглавной буквы" else return ""
+            Question.PROFESSION -> if (answer == "" || answer.first().isUpperCase()) return "Профессия должна начинаться со строчной буквы" else return ""
             Question.MATERIAL -> if (Regex("[0-9]").containsMatchIn(answer)) return "Материал не должен содержать цифр" else return ""
             Question.BDAY -> if (!Regex("^\\d+$").containsMatchIn(answer)) return "Год моего рождения должен содержать только цифры" else return ""
             Question.SERIAL -> if (!Regex("\\d{7}").containsMatchIn(answer)) return "Серийный номер содержит только цифры, и их 7" else return ""
