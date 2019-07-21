@@ -12,20 +12,35 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     }
 
     fun listenAnswer(answer: String) : Pair<String, Triple<Int, Int, Int>>{
-        return if(question.answers.contains(answer)){
-            question = question.nextQuestion()
-            if (question == Question.IDLE) "Отлично - ты справился\nНа этом все, вопросов больше нет" to status.color
-            else "Отлично - ты справился\n${question.question}" to status.color
-        }else {
+        val validRes = isValid(answer)
+        if (validRes == "") {
+            if (question == Question.IDLE) return "Отлично - ты справился\nНа этом все, вопросов больше нет" to status.color
+            return if (question.answers.contains(answer.toLowerCase())) {
+                question = question.nextQuestion()
+                "Отлично - ты справился\n${question.question}" to status.color
+            } else {
 
-            if (status == Status.CRITICAL){
-                question = Question.NAME
-                status = Status.NORMAL
-                "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
-            }else {
-                status = status.nextStatus()
-                "Это неправильный ответ\n${question.question}" to status.color
+                if (status == Status.CRITICAL) {
+                    question = Question.NAME
+                    status = Status.NORMAL
+                    "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
+                } else {
+                    status = status.nextStatus()
+                    "Это неправильный ответ\n${question.question}" to status.color
+                }
             }
+        }
+        else return validRes + "\n${question.question}" to status.color
+    }
+
+    fun isValid(answer: String): String{
+        when(this.question){
+            Question.NAME -> if (answer.first().isLowerCase()) return "Имя должно начинаться с заглавной буквы" else return ""
+            Question.PROFESSION -> if (answer.first().isUpperCase()) return "Профессия должна начинаться со строчной буквы" else return ""
+            Question.MATERIAL -> if (Regex("[0-9]").containsMatchIn(answer)) return "Материал не должен содержать цифр" else return ""
+            Question.BDAY -> if (!Regex("^\\d+$").containsMatchIn(answer)) return "Год моего рождения должен содержать только цифры" else return ""
+            Question.SERIAL -> if (!Regex("\\d{7}").containsMatchIn(answer)) return "Серийный номер содержит только цифры, и их 7" else return ""
+            Question.IDLE -> return ""
         }
     }
 
