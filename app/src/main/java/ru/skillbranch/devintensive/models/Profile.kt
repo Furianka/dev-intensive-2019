@@ -1,7 +1,6 @@
 package ru.skillbranch.devintensive.models
 
 class Profile(
-    val rank: String = "Junior Android Developer",
     val firstName: String,
     val lastName: String,
     val about: String,
@@ -10,6 +9,7 @@ class Profile(
     val respect: Int = 0
 ) {
     val nickName: String = "John Doe"   //TODO implement me
+    val rank: String = "Junior Android Developer"
     fun toMap(): Map<String, Any> = mapOf(
         "nickName" to nickName,
         "rank" to rank,
