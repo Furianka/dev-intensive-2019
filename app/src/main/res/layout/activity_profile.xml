@@ -208,6 +208,7 @@
                 android:layout_marginLeft="@dimen/space_maximum_72"/>
 
         <LinearLayout
+                android:id="@+id/wr_repository"
                 style="@style/Profile.InfoItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
